@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import MapBackground from 'components/MapBackground'
-import Point from 'components/Point'
+import { RipplePoint } from 'components/Point'
 import Polyline from 'components/Polyline'
 import { map } from 'config'
 
@@ -36,7 +36,7 @@ const Map = () => {
               width={map.width}
             />
             {pointCoordinate && (
-              <Point
+              <RipplePoint
                 height={map.height}
                 width={map.width}
                 x={pointCoordinate.x}
