@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 
+import Loader from 'components/Loader'
 import MapBackground from 'components/MapBackground'
 import { RipplePoint } from 'components/Point'
 import Polyline from 'components/Polyline'
@@ -18,6 +19,7 @@ const Wrapper = styled.svg`
 const Map = () => {
   const {
     coordinates,
+    isInit,
     pointCoordinate,
     wrapperRef,
     handleWheel,
@@ -26,22 +28,28 @@ const Map = () => {
 
   return (
     <>
+      {!isInit && <Loader />}
+
       <Wrapper onWheel={handleWheel} ref={wrapperRef}>
         <svg ref={initiateRefs}>
           <g>
-            <MapBackground />
-            <Polyline
-              height={map.height}
-              points={coordinates}
-              width={map.width}
-            />
-            {pointCoordinate && (
-              <RipplePoint
-                height={map.height}
-                width={map.width}
-                x={pointCoordinate.x}
-                y={pointCoordinate.y}
-              />
+            {isInit && (
+              <>
+                <MapBackground />
+                <Polyline
+                  height={map.height}
+                  points={coordinates}
+                  width={map.width}
+                />
+                {pointCoordinate && (
+                  <RipplePoint
+                    height={map.height}
+                    width={map.width}
+                    x={pointCoordinate.x}
+                    y={pointCoordinate.y}
+                  />
+                )}
+              </>
             )}
           </g>
         </svg>

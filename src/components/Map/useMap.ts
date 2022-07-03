@@ -148,5 +148,12 @@ export const useMap = () => {
     )
   }
 
-  return { coordinates, pointCoordinate, wrapperRef, handleWheel, initiateRefs }
+  return {
+    coordinates,
+    isInit,
+    pointCoordinate,
+    wrapperRef,
+    handleWheel,
+    initiateRefs,
+  }
 }
