@@ -16,6 +16,15 @@ type TransformMatrix = {
   f: number
 }
 
+const initialTransformMatrix: TransformMatrix = {
+  a: 1,
+  b: 0,
+  c: 0,
+  d: 1,
+  e: 0,
+  f: 0,
+}
+
 /**
  * Hook exposing functions to manipulate the transform matrix attached to an svg element.
  */
@@ -23,14 +32,7 @@ export const useSvgTransform = () => {
   /**
    * Transform matrix stored between two clicks.
    */
-  const transformMatrix = React.useRef<TransformMatrix>({
-    a: 1,
-    b: 0,
-    c: 0,
-    d: 1,
-    e: 0,
-    f: 0,
-  })
+  const transformMatrix = React.useRef<TransformMatrix>(initialTransformMatrix)
 
   const groupRef = React.useRef<SVGGElement>()
   const svgRef = React.useRef<SVGSVGElement>()
@@ -70,6 +72,20 @@ export const useSvgTransform = () => {
       groupTransforms.insertItemBefore(newTransform, 0)
     }
   }, [])
+
+  const resetTransformMatrix = () => {
+    if (groupRef.current) {
+      const currentMatrix = groupRef.current.transform.baseVal.getItem(0).matrix
+      currentMatrix.a = 1
+      currentMatrix.b = 0
+      currentMatrix.c = 0
+      currentMatrix.d = 1
+      currentMatrix.e = 0
+      currentMatrix.f = 0
+
+      transformMatrix.current = initialTransformMatrix
+    }
+  }
 
   /**
    * Save the current transform matrix applied on the svg in the appropriate ref.
@@ -119,6 +135,7 @@ export const useSvgTransform = () => {
     wrapperRef,
     initiateRefs,
     move,
+    resetTransformMatrix,
     saveTransformMatrix,
     zoom,
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { map, scale, speed } from 'config'
+import { useRealSize } from 'hooks/useRealSize'
 import { useSvgTransform } from 'hooks/useSvgTransform'
 import { gpxSystemToScreenSystem } from 'utils/gpxSystemToScreenSystem'
 import { interpolateCurve } from 'utils/interpolateCurve'
@@ -23,7 +24,16 @@ export const useMap = () => {
    */
   const [scrollValue, setScrollValue] = React.useState<number>(0)
 
-  const { wrapperRef, initiateRefs, move, zoom } = useSvgTransform()
+  /**
+   * Screen real height and width. They are used to handle the responsiveness
+   * by triggering the "center point" effects.
+   * When the height or width changes, the coordinates of the first point center are reset
+   * and the current point is moved to the center.
+   */
+  const { height: screenHeight, width: screenWidth } = useRealSize()
+
+  const { wrapperRef, initiateRefs, move, resetTransformMatrix, zoom } =
+    useSvgTransform()
 
   /**
    * Convert the coordinates coming from the gpx file to screen coordinates.
@@ -43,6 +53,25 @@ export const useMap = () => {
       return { x: 0, y: 0 }
     },
     [wrapperRef]
+  )
+
+  /**
+   * Initialize the map position. It move the first coordinate to the center of the screen and
+   * scale up the svg.
+   * The movement of the point is relative to this first position.
+   */
+  const initializeCenter = React.useCallback(
+    (coordinate: Vector2) => {
+      if (wrapperRef.current) {
+        const { x, y } = convertGpxSystemToScreenSystem(coordinate)
+        const { height, width } = wrapperRef.current.getBoundingClientRect()
+        const horizontalOffset = (width * (1 / 6)) / scale
+
+        move(width / 2 - x + horizontalOffset, height / 2 - y)
+        zoom(scale)
+      }
+    },
+    [convertGpxSystemToScreenSystem, move, wrapperRef, zoom]
   )
 
   /**
@@ -77,21 +106,26 @@ export const useMap = () => {
    * It moves the map to place the first coordinate to the center of the screen and scale it to the appropriate size.
    */
   React.useEffect(() => {
-    if (wrapperRef.current && firstCoordinate && !isInit) {
-      const firstPoint = convertGpxSystemToScreenSystem(firstCoordinate)
-      const { height, width } = wrapperRef.current.getBoundingClientRect()
-      move(width / 2 - firstPoint.x, height / 2 - firstPoint.y)
-      zoom(scale)
-
+    if (firstCoordinate && !isInit) {
+      initializeCenter(firstCoordinate)
       setIsInit(true)
     }
+  }, [initializeCenter, firstCoordinate, isInit])
+
+  /**
+   * Reset the position of the first coordinates when the screen size changes.
+   */
+  React.useEffect(() => {
+    if (firstCoordinate) {
+      resetTransformMatrix()
+      initializeCenter(firstCoordinate)
+    }
   }, [
-    convertGpxSystemToScreenSystem,
+    initializeCenter,
     firstCoordinate,
-    isInit,
-    move,
-    wrapperRef,
-    zoom,
+    resetTransformMatrix,
+    screenHeight,
+    screenWidth,
   ])
 
   /**
@@ -117,7 +151,7 @@ export const useMap = () => {
   }, [simplifiedCoordinates, scrollValue])
 
   /**
-   * Move the map when the simplifiedCoordinate changes.
+   * Move the map when the simplifiedCoordinate or screen size changes.
    * Therefore this effect is triggered after every scrollValue changes.
    */
   React.useEffect(() => {
@@ -131,6 +165,8 @@ export const useMap = () => {
     convertGpxSystemToScreenSystem,
     firstCoordinate,
     move,
+    screenHeight,
+    screenWidth,
     simplifiedCoordinate,
     wrapperRef,
   ])

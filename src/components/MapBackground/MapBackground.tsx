@@ -17,7 +17,7 @@ const MapBackground = () => (
       y="0"
       height="100%"
       width="100%"
-      style={{ opacity: 0.5 }}
+      style={{ opacity: 0.4 }}
     />
   </>
 )

@@ -22,15 +22,18 @@ export const gpxSystemToScreenSystem = (
   const { height: gpxHeight, width: gpxWidth } = gpxSystem
   const { height, width } = screenSystem
 
-  const isHorizontal = width > height
+  const ratio = gpxHeight / gpxWidth
+
+  const isHorizontal = ratio * width > height
   if (isHorizontal) {
     const alpha = height / gpxHeight
-    const offset = (width - (height * gpxWidth) / gpxHeight) / 2
+    const offset = (width - alpha * gpxWidth) / 2
 
     return { x: coordinate.x * alpha + offset, y: coordinate.y * alpha }
   } else {
     const alpha = width / gpxWidth
+    const offset = (height - alpha * gpxHeight) / 2
 
-    return { x: coordinate.x * alpha, y: coordinate.y * alpha }
+    return { x: coordinate.x * alpha, y: coordinate.y * alpha + offset }
   }
 }
