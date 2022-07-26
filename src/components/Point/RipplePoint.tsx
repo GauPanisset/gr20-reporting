@@ -29,9 +29,9 @@ const ShadowedCircle = styled.circle`
 /**
  * Component displaying a point with a ripple effect and a specific style.
  */
-const RipplePoint = ({ height, width, x, y }: PointProps) => {
+const RipplePoint = ({ x, y }: PointProps) => {
   return (
-    <svg viewBox={`0 0 ${width} ${height}`}>
+    <>
       <Background cx={x} cy={y} r={RADIUS} fill="#ffffff" stroke="#ffffff" />
       <ShadowedCircle
         cx={x}
@@ -40,7 +40,7 @@ const RipplePoint = ({ height, width, x, y }: PointProps) => {
         fill="#ECB365"
         stroke="#ffffff"
       />
-    </svg>
+    </>
   )
 }
 

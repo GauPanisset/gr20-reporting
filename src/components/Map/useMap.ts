@@ -80,7 +80,7 @@ export const useMap = () => {
   React.useEffect(() => {
     const fetch = async () => {
       const newCoordinates = await gpxToCoordinates(
-        'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/corse-gr20-complet-16-etapes-officiels-nord-sud.gpx'
+        'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/GR20.gpx'
       )
 
       setCoordinates(newCoordinates)

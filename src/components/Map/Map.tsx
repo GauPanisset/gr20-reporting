@@ -34,22 +34,13 @@ const Map = () => {
         <svg ref={initiateRefs}>
           <g>
             {isInit && (
-              <>
+              <svg viewBox={`0 0 ${map.width} ${map.height}`}>
                 <MapBackground />
-                <Polyline
-                  height={map.height}
-                  points={coordinates}
-                  width={map.width}
-                />
+                <Polyline points={coordinates} />
                 {pointCoordinate && (
-                  <RipplePoint
-                    height={map.height}
-                    width={map.width}
-                    x={pointCoordinate.x}
-                    y={pointCoordinate.y}
-                  />
+                  <RipplePoint x={pointCoordinate.x} y={pointCoordinate.y} />
                 )}
-              </>
+              </svg>
             )}
           </g>
         </svg>
