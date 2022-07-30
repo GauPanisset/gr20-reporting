@@ -1,10 +1,12 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import { infoLayerId } from 'components/InfoLayer'
 import ProgressBar from 'components/ProgressBar'
-import { useScroll } from 'hooks/useScroll'
+
+import { ReactComponent as MouseClickIcon } from './MouseClickIcon.svg'
+import { NoteProps } from './noteProps'
+import { useNote } from './useNote'
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -24,33 +26,80 @@ const StyledProgressBar = styled(ProgressBar)`
 `
 
 const Text = styled.div`
-  padding: 24px;
+  padding: 24px 24px 8px 24px;
+  font-weight: 600;
 `
 
-type NoteProps = {
-  onClose: () => void
-  text: string
+const reveal = keyframes`
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+`
+
+const DelayedSpan = styled.span<DelayedSpanProps>`
+  animation: ${({ delay }) => delay}ms step-end ${reveal};
+  opacity: 1;
+`
+
+const StyledSpan = styled.span``
+
+const opacityYoyo = keyframes`
+  0% { opacity: 0.4 }
+  50% { opacity: 0.7 }
+  100% { opacity: 0.4 }
+`
+
+const Action = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+
+  height: 24px;
+
+  padding: 0 8px 8px 0;
+
+  text-align: end;
+
+  animation: 1.5s ease-in-out infinite ${opacityYoyo};
+  opacity: 0.5;
+`
+
+type DelayedSpanProps = {
+  delay: number
 }
 
 /**
  * Component displaying a basic note on the top of the InfoLayer (through portal).
  * When the note is active, the player can scroll to close it.
  */
-const Note = ({ onClose, text }: NoteProps) => {
-  const { scrollValue } = useScroll({ max: 100, min: 0, speed: 0.5 })
-
+const Note = ({ onClose, lines }: NoteProps) => {
   const infoLayerElement = document.getElementById(infoLayerId)
 
-  React.useEffect(() => {
-    if (scrollValue === 100) onClose()
-  }, [scrollValue, onClose])
+  const { characters, isTextCompleted, scrollValue } = useNote({
+    onClose,
+    lines,
+  })
 
   return (
     infoLayerElement &&
     ReactDOM.createPortal(
       <Wrapper>
         <StyledProgressBar value={scrollValue} />
-        <Text>{text}</Text>
+        <Text>
+          {characters.map(({ delay, text }) => {
+            if (isTextCompleted)
+              return <StyledSpan key={delay}>{text}</StyledSpan>
+            return (
+              <DelayedSpan key={delay} delay={delay}>
+                {text}
+              </DelayedSpan>
+            )
+          })}
+        </Text>
+        <Action>
+          <MouseClickIcon height={24} width={24} />
+          pour continuer
+        </Action>
       </Wrapper>,
       infoLayerElement
     )

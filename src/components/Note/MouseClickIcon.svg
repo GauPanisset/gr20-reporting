@@ -1,0 +1,19 @@
+<svg width="46" height="60" viewBox="0 0 46 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="7" y="5" width="38" height="54" rx="19" stroke="var(--dark-color)" stroke-width="4"/>
+  <rect x="23" y="17" width="6" height="14" rx="3" stroke="var(--dark-color)" stroke-width="4"/>
+  <path d="M26 5V17" stroke="var(--dark-color)" stroke-width="4"/>
+  <path d="M44 27L30 27" stroke="var(--dark-color)" stroke-width="4"/>
+  <path d="M22 27L8 27" stroke="var(--dark-color)" stroke-width="4"/>
+  <path d="M11 1V5.61538M3.30769 3.30769L6.57126 6.57126M1 11H5.61538" stroke="var(--dark-color)" stroke-width="4" stroke-linecap="round"/>
+  <mask id="mask0_19_899" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="4" width="20" height="23">
+    <path d="M23 27H7.00003C7.00003 27 5.67372 18.2513 12 11C17.4726 4.72727 26 5.00004 26 5.00004V17C26 17 23 16.8182 23 21V27Z" fill="white"/>
+  </mask>
+  <g mask="url(#mask0_19_899)">
+    <line x1="-4.70711" y1="18.6274" x2="18.6274" y2="-4.70716" stroke="var(--dark-color)" stroke-width="4"/>
+    <line x1="-1.17158" y1="22.1629" x2="22.1629" y2="-1.17164" stroke="var(--dark-color)" stroke-width="4"/>
+    <line x1="2.36394" y1="25.6984" x2="25.6985" y2="2.36389" stroke="var(--dark-color)" stroke-width="4"/>
+    <line x1="5.89946" y1="29.2339" x2="29.234" y2="5.89941" stroke="var(--dark-color)" stroke-width="4"/>
+    <line x1="9.43498" y1="32.7695" x2="32.7695" y2="9.43493" stroke="var(--dark-color)" stroke-width="4"/>
+    <line x1="12.9705" y1="36.305" x2="36.305" y2="12.9705" stroke="var(--dark-color)" stroke-width="4"/>
+  </g>
+</svg>

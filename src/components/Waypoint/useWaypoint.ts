@@ -19,12 +19,12 @@ export const useWaypoint = ({
   onLeave = () => {},
   waypointId,
 }: UseWaypointProps) => {
-  const [completed, setCompleted] = React.useState<boolean>(false)
+  const [isCompleted, setIsCompleted] = React.useState<boolean>(false)
 
   const { enterWaypoint, leaveWaypoint } = useGameContext()
 
   React.useEffect(() => {
-    if (!completed && isActive) {
+    if (!isCompleted && isActive) {
       enterWaypoint(waypointId)
       onEnter()
       return () => {
@@ -33,7 +33,7 @@ export const useWaypoint = ({
       }
     }
   }, [
-    completed,
+    isCompleted,
     enterWaypoint,
     isActive,
     leaveWaypoint,
@@ -42,5 +42,5 @@ export const useWaypoint = ({
     waypointId,
   ])
 
-  return { completed, handleComplete: () => setCompleted(true) }
+  return { isCompleted, handleComplete: () => setIsCompleted(true) }
 }

@@ -1,3 +1,4 @@
+import { NoteText } from 'types'
 /**
  * Map background image size. This also defines the dimensions of the gpx system.
  */
@@ -12,6 +13,11 @@ export const map = {
 export const scale = 8
 
 /**
- * Rate of increase of the scroll value.
+ * Character display speed of note text.
  */
-export const speed = 1 / 2000
+export const textSpeed: Record<string, NoteText['speed']> = {
+  pause: 500,
+  slow: 120,
+  normal: 50,
+  fast: 10,
+}

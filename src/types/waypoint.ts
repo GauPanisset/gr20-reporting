@@ -1,5 +1,5 @@
 import { WaypointType } from 'enums'
-import { Vector2 } from 'types'
+import { NoteText, Vector2 } from 'types'
 
 type WaypointBase = {
   coordinate: Vector2
@@ -13,7 +13,7 @@ type WaypointRefuge = WaypointBase & {
 
 type WaypointNote = WaypointBase & {
   type: WaypointType.Note
-  note: string
+  note: NoteText[]
 }
 
 export type Waypoint = WaypointRefuge | WaypointNote

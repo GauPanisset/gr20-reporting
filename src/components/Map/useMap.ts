@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useGameContext } from 'components/GameProvider'
-import { map, scale, speed } from 'config'
+import { map, scale } from 'config'
 import { useRealSize } from 'hooks/useRealSize'
 import { useScroll } from 'hooks/useScroll'
 import { useSvgTransform } from 'hooks/useSvgTransform'
@@ -41,7 +41,7 @@ export const useMap = () => {
   const { scrollValue } = useScroll({
     max: 1,
     min: 0,
-    speed: activeWaypoint === null ? speed : 0,
+    speed: activeWaypoint === null ? 1 / 2000 : 0,
   })
 
   /**

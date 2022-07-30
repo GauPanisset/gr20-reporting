@@ -1,3 +1,4 @@
+import { textSpeed } from 'config'
 import { WaypointType } from 'enums'
 import { Waypoint } from 'types'
 import { projectLatLon } from 'utils/projectLatLon'
@@ -81,7 +82,11 @@ export const waypoints: Waypoint[] = [
   {
     coordinate: projectLatLon(42.477807, 8.878112),
     id: 15,
-    note: "Petit passage escalade... c'est dangereux ça nan ?!",
+    note: [
+      { text: 'Petit passage escalade... ', speed: textSpeed.normal },
+      { text: 'Euuuuh... ', speed: textSpeed.slow },
+      { text: "C'est dangereux là NON ?!", speed: textSpeed.fast },
+    ],
     type: WaypointType.Note,
   },
 ]

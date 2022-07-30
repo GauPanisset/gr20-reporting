@@ -1,8 +1,8 @@
 import Note from 'components/Note'
 import { WaypointType } from 'enums'
 
-import { useWaypoint } from '../useWaypoint'
-import { WaypointProps } from '../waypointProps'
+import { useWaypoint } from '../../useWaypoint'
+import { WaypointProps } from '../../waypointProps'
 
 /**
  * Waypoint component attached to the 'note' waypoint.
@@ -14,7 +14,7 @@ const NoteWaypoint = ({ isActive = false, waypoint, x, y }: WaypointProps) => {
       `'waypoint' props of NoteWaypoint should be of type ${WaypointType.Note}`
     )
 
-  const { completed, handleComplete } = useWaypoint({
+  const { isCompleted, handleComplete } = useWaypoint({
     isActive,
     waypointId: waypoint.id,
   })
@@ -22,8 +22,8 @@ const NoteWaypoint = ({ isActive = false, waypoint, x, y }: WaypointProps) => {
   return (
     <>
       <circle cx={x} cy={y} r={2} fill="white" />
-      {!completed && isActive && (
-        <Note text={waypoint.note} onClose={handleComplete} />
+      {isActive && !isCompleted && (
+        <Note lines={waypoint.note} onClose={handleComplete} />
       )}
     </>
   )

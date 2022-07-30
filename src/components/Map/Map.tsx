@@ -6,7 +6,7 @@ import { RipplePoint } from 'components/Point'
 import Polyline from 'components/Polyline'
 import Waypoint from 'components/Waypoint'
 import { map } from 'config'
-import { waypoints } from 'config/waypoints'
+import { waypoints } from 'assets/waypoints'
 import { WaypointType } from 'enums'
 import { computeDistance } from 'utils/computeDistance'
 
