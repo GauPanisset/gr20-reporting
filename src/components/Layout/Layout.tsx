@@ -2,12 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
+  position: relative;
   height: 100vh;
   width: 100vw;
 
   overflow: hidden;
 
-  background-color: #041c32;
+  background-color: var(--dark-color);
 `
 
 type LayoutProps = {

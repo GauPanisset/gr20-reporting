@@ -1,4 +1,4 @@
-import { PointProps } from './pointProps'
+import { PointProps } from '../pointProps'
 
 /**
  * Component displaying a point.

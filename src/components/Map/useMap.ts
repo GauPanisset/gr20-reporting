@@ -1,7 +1,9 @@
 import React from 'react'
 
+import { useGameContext } from 'components/GameProvider'
 import { map, scale, speed } from 'config'
 import { useRealSize } from 'hooks/useRealSize'
+import { useScroll } from 'hooks/useScroll'
 import { useSvgTransform } from 'hooks/useSvgTransform'
 import { gpxSystemToScreenSystem } from 'utils/gpxSystemToScreenSystem'
 import { interpolateCurve } from 'utils/interpolateCurve'
@@ -18,11 +20,6 @@ export const useMap = () => {
    * Whether the component is initialized or not.
    */
   const [isInit, setIsInit] = React.useState<boolean>(false)
-  /**
-   * Value between 0 and 1 indicating the scroll percentage.
-   * This is used to move along the path on scroll.
-   */
-  const [scrollValue, setScrollValue] = React.useState<number>(0)
 
   /**
    * Screen real height and width. They are used to handle the responsiveness
@@ -34,6 +31,18 @@ export const useMap = () => {
 
   const { wrapperRef, initiateRefs, move, resetTransformMatrix, zoom } =
     useSvgTransform()
+
+  const { activeWaypoint } = useGameContext()
+
+  /**
+   * Value between 0 and 1 indicating the scroll percentage.
+   * This is used to move along the path on scroll.
+   */
+  const { scrollValue } = useScroll({
+    max: 1,
+    min: 0,
+    speed: activeWaypoint === null ? speed : 0,
+  })
 
   /**
    * Convert the coordinates coming from the gpx file to screen coordinates.
@@ -171,25 +180,11 @@ export const useMap = () => {
     wrapperRef,
   ])
 
-  /**
-   * Callback function triggered when the user rotates his mouse wheel.
-   * It updates the scrollValue.
-   * @param event wheel event
-   */
-  const handleWheel = (event: React.WheelEvent) => {
-    const delta = event.deltaY
-
-    setScrollValue((prevScrollValue) =>
-      Math.max(0, Math.min(prevScrollValue + Math.sign(delta) * speed, 1))
-    )
-  }
-
   return {
     coordinates,
     isInit,
     pointCoordinate,
     wrapperRef,
-    handleWheel,
     initiateRefs,
   }
 }

@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 
-import { PointProps } from './pointProps'
+import { PointProps } from '../pointProps'
 
 const RADIUS = 4
 
@@ -23,7 +23,8 @@ const Background = styled.circle`
 `
 
 const ShadowedCircle = styled.circle`
-  filter: drop-shadow(0px 0px 1px #041c32);
+  fill: var(--light-color);
+  filter: drop-shadow(0px 0px 1px var(--dark-color));
 `
 
 /**
@@ -32,14 +33,8 @@ const ShadowedCircle = styled.circle`
 const RipplePoint = ({ x, y }: PointProps) => {
   return (
     <>
-      <Background cx={x} cy={y} r={RADIUS} fill="#ffffff" stroke="#ffffff" />
-      <ShadowedCircle
-        cx={x}
-        cy={y}
-        r={RADIUS}
-        fill="#ECB365"
-        stroke="#ffffff"
-      />
+      <Background cx={x} cy={y} z={0} r={RADIUS} fill="white" stroke="white" />
+      <ShadowedCircle cx={x} cy={y} z={0} r={RADIUS} stroke="white" />
     </>
   )
 }

@@ -73,7 +73,10 @@ export const useSvgTransform = () => {
     }
   }, [])
 
-  const resetTransformMatrix = () => {
+  /**
+   * Reset the transform matrix applied on the svg.
+   */
+  const resetTransformMatrix = React.useCallback(() => {
     if (groupRef.current) {
       const currentMatrix = groupRef.current.transform.baseVal.getItem(0).matrix
       currentMatrix.a = 1
@@ -85,18 +88,18 @@ export const useSvgTransform = () => {
 
       transformMatrix.current = initialTransformMatrix
     }
-  }
+  }, [])
 
   /**
    * Save the current transform matrix applied on the svg in the appropriate ref.
    */
-  const saveTransformMatrix = () => {
+  const saveTransformMatrix = React.useCallback(() => {
     if (groupRef.current) {
       const { a, b, c, d, e, f } =
         groupRef.current.transform.baseVal.getItem(0).matrix
       transformMatrix.current = { a, b, c, d, e, f }
     }
-  }
+  }, [])
 
   /**
    * Move the svg.
@@ -112,24 +115,28 @@ export const useSvgTransform = () => {
   /**
    * Re-scale the svg.
    */
-  const zoom = React.useCallback((scale: number) => {
-    if (groupRef.current && wrapperRef.current) {
-      const currentMatrix = groupRef.current.transform.baseVal.getItem(0).matrix
-      currentMatrix.a *= scale
-      currentMatrix.b *= scale
-      currentMatrix.c *= scale
-      currentMatrix.d *= scale
-      currentMatrix.e *= scale
-      currentMatrix.f *= scale
+  const zoom = React.useCallback(
+    (scale: number) => {
+      if (groupRef.current && wrapperRef.current) {
+        const currentMatrix =
+          groupRef.current.transform.baseVal.getItem(0).matrix
+        currentMatrix.a *= scale
+        currentMatrix.b *= scale
+        currentMatrix.c *= scale
+        currentMatrix.d *= scale
+        currentMatrix.e *= scale
+        currentMatrix.f *= scale
 
-      const { height, width } = wrapperRef.current.getBoundingClientRect()
+        const { height, width } = wrapperRef.current.getBoundingClientRect()
 
-      currentMatrix.e += (1 - scale) * (width / 2)
-      currentMatrix.f += (1 - scale) * (height / 2)
+        currentMatrix.e += (1 - scale) * (width / 2)
+        currentMatrix.f += (1 - scale) * (height / 2)
 
-      saveTransformMatrix()
-    }
-  }, [])
+        saveTransformMatrix()
+      }
+    },
+    [saveTransformMatrix]
+  )
 
   return {
     wrapperRef,

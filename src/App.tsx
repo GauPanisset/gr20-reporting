@@ -1,10 +1,15 @@
+import GameProvider from 'components/GameProvider'
+import InfoLayer from 'components/InfoLayer'
 import Layout from 'components/Layout'
 import Map from 'components/Map'
 
 const App = () => {
   return (
     <Layout>
-      <Map />
+      <GameProvider>
+        <Map />
+        <InfoLayer />
+      </GameProvider>
     </Layout>
   )
 }
