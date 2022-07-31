@@ -7,7 +7,7 @@ const Wrapper = styled.div<ProgressBarProps>`
   width: 100%;
 
   background: transparent;
-  border: 2px solid var(--dark-color);
+  border: 2px solid ${({ theme }) => theme.palette.background};
 
   &::after {
     content: '';
@@ -18,7 +18,7 @@ const Wrapper = styled.div<ProgressBarProps>`
     height: 100%;
     width: ${({ value }) => value}%;
 
-    background-color: var(--light-color);
+    background-color: ${({ theme }) => theme.palette.primary};
     border-bottom-right-radius: ${({ value }) => (value === 100 ? 0 : 8)}px;
   }
 `

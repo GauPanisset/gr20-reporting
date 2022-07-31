@@ -9,12 +9,14 @@ type UseSvgDragProps = {
   wrapperRef: React.RefObject<SVGSVGElement>
   /**
    * Callback triggered when the user drags the svg.
+   * The deltaX and deltaY from the initial position are passed as parameters.
    */
   onDrag: (dx: number, dy: number) => void
   /**
    * Callback triggered when the user stops dragging the svg.
+   * The deltaX and deltaY from the initial position are passed as parameters.
    */
-  onDragEnd: () => void
+  onDragEnd: (dx: number, dy: number) => void
 }
 
 /**
@@ -77,8 +79,16 @@ export const useSvgDrag = ({
    * Callback triggered when the user stops dragging the svg.
    */
   const handleEndDrag = (event: React.MouseEvent<SVGSVGElement>) => {
+    if (mousePositionOnClick.current !== null) {
+      const mousePosition = getMousePosition(event)
+
+      onDragEnd(
+        mousePosition.x - mousePositionOnClick.current.x,
+        mousePosition.y - mousePositionOnClick.current.y
+      )
+    }
+
     mousePositionOnClick.current = null
-    onDragEnd()
   }
 
   return { handleStartDrag, handleDrag, handleEndDrag }

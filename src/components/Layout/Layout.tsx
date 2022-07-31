@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 
   overflow: hidden;
 
-  background-color: var(--dark-color);
+  background-color: ${({ theme }) => theme.palette.background};
 `
 
 type LayoutProps = {

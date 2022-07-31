@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTheme } from 'styled-components'
 
 import { useGameContext } from 'components/GameProvider'
 import { map, scale } from 'config'
@@ -44,6 +45,8 @@ export const useMap = () => {
     speed: activeWaypoint === null ? 1 / 2000 : 0,
   })
 
+  const { isTouchable } = useTheme()
+
   /**
    * Convert the coordinates coming from the gpx file to screen coordinates.
    * This is especially used to move the map based on the movement on the path.
@@ -74,13 +77,13 @@ export const useMap = () => {
       if (wrapperRef.current) {
         const { x, y } = convertGpxSystemToScreenSystem(coordinate)
         const { height, width } = wrapperRef.current.getBoundingClientRect()
-        const horizontalOffset = (width * (1 / 6)) / scale
+        const horizontalOffset = isTouchable ? 0 : (width * (1 / 6)) / scale
 
         move(width / 2 - x + horizontalOffset, height / 2 - y)
         zoom(scale)
       }
     },
-    [convertGpxSystemToScreenSystem, move, wrapperRef, zoom]
+    [convertGpxSystemToScreenSystem, isTouchable, move, wrapperRef, zoom]
   )
 
   /**

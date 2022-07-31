@@ -23,8 +23,8 @@ const Background = styled.circle`
 `
 
 const ShadowedCircle = styled.circle`
-  fill: var(--light-color);
-  filter: drop-shadow(0px 0px 1px var(--dark-color));
+  fill: ${({ theme }) => theme.palette.primary};
+  filter: drop-shadow(0px 0px 1px ${({ theme }) => theme.palette.background});
 `
 
 /**

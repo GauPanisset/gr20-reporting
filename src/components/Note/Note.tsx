@@ -1,32 +1,52 @@
 import ReactDOM from 'react-dom'
 import styled, { keyframes } from 'styled-components'
 
+import Avatar from 'components/Avatar'
+import { ClickIcon } from 'components/icons'
 import { infoLayerId } from 'components/InfoLayer'
 import ProgressBar from 'components/ProgressBar'
 
-import { ReactComponent as MouseClickIcon } from './MouseClickIcon.svg'
 import { NoteProps } from './noteProps'
 import { useNote } from './useNote'
 
 const Wrapper = styled.div`
-  box-sizing: border-box;
   width: 60%;
 
   margin: 32px auto;
 
   background-color: white;
-  border: 2px solid var(--dark-color);
+  border: 2px solid ${({ theme }) => theme.palette.background};
   border-radius: 0px;
-  box-shadow: 8px 8px var(--light-color);
+  box-shadow: 8px 8px ${({ theme }) => theme.palette.primary};
+
+  @media screen and (max-width: 600px) {
+    width: calc(100% - 2 * 16px);
+    margin: 16px;
+  }
 `
 
 const StyledProgressBar = styled(ProgressBar)`
   border: unset;
-  border-bottom: 2px dashed var(--dark-color);
+  border-bottom: 2px dashed ${({ theme }) => theme.palette.background};
+`
+
+const Body = styled.div`
+  display: flex;
+
+  margin-top: 8px; ;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
 `
 
 const Text = styled.div`
-  padding: 24px 24px 8px 24px;
+  padding: 8px 24px;
+
   font-weight: 600;
 `
 
@@ -85,21 +105,29 @@ const Note = ({ onClose, lines }: NoteProps) => {
     ReactDOM.createPortal(
       <Wrapper>
         <StyledProgressBar value={scrollValue} />
-        <Text>
-          {characters.map(({ delay, text }) => {
-            if (isTextCompleted)
-              return <StyledSpan key={delay}>{text}</StyledSpan>
-            return (
-              <DelayedSpan key={delay} delay={delay}>
-                {text}
-              </DelayedSpan>
-            )
-          })}
-        </Text>
-        <Action>
-          <MouseClickIcon height={24} width={24} />
-          pour continuer
-        </Action>
+        <Body>
+          <Avatar
+            src="https://secure.gravatar.com/avatar/ccac36b35a890c8ac8cff3f83fb94d91"
+            alt="Gauthier's avatar"
+          />
+          <Content>
+            <Text>
+              {characters.map(({ delay, text }) => {
+                if (isTextCompleted)
+                  return <StyledSpan key={delay}>{text}</StyledSpan>
+                return (
+                  <DelayedSpan key={delay} delay={delay}>
+                    {text}
+                  </DelayedSpan>
+                )
+              })}
+            </Text>
+            <Action>
+              <ClickIcon height={24} width={24} />
+              pour continuer
+            </Action>
+          </Content>
+        </Body>
       </Wrapper>,
       infoLayerElement
     )
