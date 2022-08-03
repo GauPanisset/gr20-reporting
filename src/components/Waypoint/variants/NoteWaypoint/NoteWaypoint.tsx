@@ -23,7 +23,7 @@ const NoteWaypoint = ({ isActive = false, waypoint, x, y }: WaypointProps) => {
     <>
       <circle cx={x} cy={y} r={2} fill="white" />
       {isActive && !isCompleted && (
-        <Note lines={waypoint.note} onClose={handleComplete} />
+        <Note onClose={handleComplete} texts={waypoint.texts} />
       )}
     </>
   )

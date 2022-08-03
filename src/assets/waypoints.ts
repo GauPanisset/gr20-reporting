@@ -82,10 +82,19 @@ export const waypoints: Waypoint[] = [
   {
     coordinate: projectLatLon(42.477807, 8.878112),
     id: 15,
-    note: [
-      { text: 'Petit passage escalade... ', speed: textSpeed.normal },
-      { text: 'Euuuuh... ', speed: textSpeed.slow },
-      { text: "C'est dangereux là NON ?!", speed: textSpeed.fast },
+    texts: [
+      {
+        character: {
+          avatar:
+            'https://secure.gravatar.com/avatar/ccac36b35a890c8ac8cff3f83fb94d91',
+          name: 'Gauthier',
+        },
+        lines: [
+          { text: 'Petit passage escalade... ', speed: textSpeed.normal },
+          { text: 'Euuuuh... ', speed: textSpeed.slow },
+          { text: "C'est dangereux là NON ?!", speed: textSpeed.fast },
+        ],
+      },
     ],
     type: WaypointType.Note,
   },

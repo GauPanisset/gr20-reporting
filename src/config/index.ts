@@ -1,4 +1,4 @@
-import { NoteText } from 'types'
+import { Line } from 'types'
 /**
  * Map background image size. This also defines the dimensions of the gpx system.
  */
@@ -15,7 +15,7 @@ export const scale = 8
 /**
  * Character display speed of note text.
  */
-export const textSpeed: Record<string, NoteText['speed']> = {
+export const textSpeed: Record<string, Line['speed']> = {
   pause: 500,
   slow: 120,
   normal: 50,

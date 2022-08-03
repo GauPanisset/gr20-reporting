@@ -4,18 +4,17 @@ import { useScroll } from 'hooks/useScroll'
 
 import { NoteProps } from './noteProps'
 
-type Character = {
-  text: string
-  delay: number
-}
-
 type useNoteProps = NoteProps & {}
 
 /**
  * Hook implementing the Note logic.
  * It handles text display and player control on the Note.
  */
-export const useNote = ({ onClose, lines }: useNoteProps) => {
+export const useNote = ({ onClose, texts }: useNoteProps) => {
+  /**
+   * Index of the current text in the `texts` array.
+   */
+  const [textIndex, setTextIndex] = React.useState<number>(0)
   const [isTextCompleted, setIsTextCompleted] = React.useState<boolean>(false)
 
   /**
@@ -25,55 +24,50 @@ export const useNote = ({ onClose, lines }: useNoteProps) => {
   const { scrollValue } = useScroll({ max: 100, min: 0, speed: 0.5 })
 
   /**
-   * Array of characters with their delay in milliseconds before being displayed.
+   * Callback function triggered when the Note should be closed.
    */
-  const characters = React.useMemo<Character[]>(() => {
-    let totalDelay = 0
-    return lines
-      .map((line, index) => {
-        if (index < lines.length - 1) line.text += ' '
-        return line.text.split('').map((character) => {
-          totalDelay += line.speed
-
-          return { delay: totalDelay, text: character }
-        })
-      })
-      .flat()
-  }, [lines])
+  const handleClose = React.useCallback(() => {
+    if (texts.length > textIndex + 1) {
+      setIsTextCompleted(false)
+      setTextIndex((prevTextIndex) => prevTextIndex + 1)
+    } else onClose()
+  }, [onClose, textIndex, texts.length])
 
   /**
-   * Trigger the `onClose` callback when the progress bar (controlled by player scroll)
+   * Trigger the `handleClose` callback when the progress bar (controlled by player scroll)
    * is full.
    */
   React.useEffect(() => {
-    if (scrollValue === 100) onClose()
-  }, [scrollValue, onClose])
-
-  /**
-   * Set the `isTextCompleted` to `true` when the text is full displayed.
-   */
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsTextCompleted(true)
-    }, characters[characters.length - 1].delay)
-
-    return () => clearTimeout(timeout)
-  }, [characters])
+    if (scrollValue === 100) handleClose()
+  }, [scrollValue, handleClose])
 
   /**
    * Effect setting up the mouse down listener.
    * The player can click to shortcut the text display animation
-   * and continue to next waypoint.
+   * and continue to next text or waypoint.
    */
   React.useEffect(() => {
     const handleClick = () => {
-      if (isTextCompleted) onClose()
-      setIsTextCompleted(true)
+      if (isTextCompleted) handleClose()
+      else setIsTextCompleted(true)
     }
 
     window.addEventListener('mousedown', handleClick)
     return () => window.removeEventListener('mousedown', handleClick)
-  }, [isTextCompleted, onClose])
+  }, [handleClose, isTextCompleted])
 
-  return { characters, isTextCompleted, scrollValue }
+  /**
+   * Set the `isTextCompleted` to `true` when the text is full displayed.
+   */
+  const handleTextFinish = React.useCallback(() => {
+    setIsTextCompleted(true)
+  }, [])
+
+  return {
+    character: texts[textIndex].character,
+    handleTextFinish,
+    isTextCompleted,
+    lines: texts[textIndex].lines,
+    scrollValue,
+  }
 }

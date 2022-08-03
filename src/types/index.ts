@@ -1,3 +1,5 @@
+export * from './character'
+export * from './line'
 export * from './noteText'
 export * from './vector2'
 export * from './waypoint'

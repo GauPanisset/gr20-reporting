@@ -13,7 +13,8 @@ type WaypointRefuge = WaypointBase & {
 
 type WaypointNote = WaypointBase & {
   type: WaypointType.Note
-  note: NoteText[]
+  image?: string
+  texts: NoteText[]
 }
 
 export type Waypoint = WaypointRefuge | WaypointNote

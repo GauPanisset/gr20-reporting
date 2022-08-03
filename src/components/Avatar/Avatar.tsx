@@ -3,6 +3,10 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   height: 80px;
   width: 80px;
+
+  & > img {
+    height: 100%;
+  }
 `
 
 type AvatarProps = {

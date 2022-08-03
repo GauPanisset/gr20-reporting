@@ -5,6 +5,7 @@ import Avatar from 'components/Avatar'
 import { ClickIcon } from 'components/icons'
 import { infoLayerId } from 'components/InfoLayer'
 import ProgressBar from 'components/ProgressBar'
+import Text from 'components/Text'
 
 import { NoteProps } from './noteProps'
 import { useNote } from './useNote'
@@ -43,25 +44,6 @@ const Content = styled.div`
 
   width: 100%;
 `
-
-const Text = styled.div`
-  padding: 8px 24px;
-
-  font-weight: 600;
-`
-
-const reveal = keyframes`
-  0% { opacity: 0 }
-  100% { opacity: 1 }
-`
-
-const DelayedSpan = styled.span<DelayedSpanProps>`
-  animation: ${({ delay }) => delay}ms step-end ${reveal};
-  opacity: 1;
-`
-
-const StyledSpan = styled.span``
-
 const opacityYoyo = keyframes`
   0% { opacity: 0.4 }
   50% { opacity: 0.7 }
@@ -84,54 +66,45 @@ const Action = styled.div`
   opacity: 0.5;
 `
 
-type DelayedSpanProps = {
-  delay: number
-}
-
 /**
  * Component displaying a basic note on the top of the InfoLayer (through portal).
  * When the note is active, the player can scroll to close it.
  */
-const Note = ({ onClose, lines }: NoteProps) => {
+const Note = ({ disablePortal = false, onClose, texts }: NoteProps) => {
   const infoLayerElement = document.getElementById(infoLayerId)
 
-  const { characters, isTextCompleted, scrollValue } = useNote({
-    onClose,
-    lines,
-  })
+  const { character, handleTextFinish, isTextCompleted, lines, scrollValue } =
+    useNote({
+      onClose,
+      texts,
+    })
 
-  return (
-    infoLayerElement &&
-    ReactDOM.createPortal(
-      <Wrapper>
-        <StyledProgressBar value={scrollValue} />
-        <Body>
-          <Avatar
-            src="https://secure.gravatar.com/avatar/ccac36b35a890c8ac8cff3f83fb94d91"
-            alt="Gauthier's avatar"
-          />
-          <Content>
-            <Text>
-              {characters.map(({ delay, text }) => {
-                if (isTextCompleted)
-                  return <StyledSpan key={delay}>{text}</StyledSpan>
-                return (
-                  <DelayedSpan key={delay} delay={delay}>
-                    {text}
-                  </DelayedSpan>
-                )
-              })}
-            </Text>
-            <Action>
-              <ClickIcon height={24} width={24} />
-              pour continuer
-            </Action>
-          </Content>
-        </Body>
-      </Wrapper>,
-      infoLayerElement
-    )
+  const note = (
+    <Wrapper>
+      <StyledProgressBar value={scrollValue} />
+      <Body>
+        {character.avatar && (
+          <Avatar src={character.avatar} alt={`Avatar de ${character.name}`} />
+        )}
+        <Content>
+          {lines && (
+            <Text
+              lines={lines}
+              onFinish={handleTextFinish}
+              shouldDelay={!isTextCompleted}
+            />
+          )}
+          <Action>
+            <ClickIcon height={24} width={24} />
+          </Action>
+        </Content>
+      </Body>
+    </Wrapper>
   )
+
+  return disablePortal && infoLayerElement
+    ? ReactDOM.createPortal(note, infoLayerElement)
+    : note
 }
 
 export default Note

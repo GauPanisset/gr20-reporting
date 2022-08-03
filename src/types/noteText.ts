@@ -1,4 +1,6 @@
+import { Character, Line } from 'types'
+
 export type NoteText = {
-  text: string
-  speed: number
+  character: Character
+  lines: Line[]
 }
