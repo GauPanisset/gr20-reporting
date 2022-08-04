@@ -20,6 +20,8 @@ const Wrapper = styled.div`
   border-radius: 0px;
   box-shadow: 8px 8px ${({ theme }) => theme.palette.primary};
 
+  text-align: center;
+
   @media screen and (max-width: 600px) {
     width: calc(100% - 2 * 16px);
     margin: 16px;
@@ -29,6 +31,20 @@ const Wrapper = styled.div`
 const StyledProgressBar = styled(ProgressBar)`
   border: unset;
   border-bottom: 2px dashed ${({ theme }) => theme.palette.background};
+`
+
+const Image = styled.img`
+  max-height: 60vh;
+  max-width: calc(100% - 2 * 8px);
+
+  margin: 32px 8px 24px 8px;
+
+  box-sizing: border-box;
+  border: 2px solid ${({ theme }) => theme.palette.background};
+
+  @media screen and (max-width: 600px) {
+    margin: 16px 8px 8px 8px;
+  }
 `
 
 const Body = styled.div`
@@ -43,6 +59,8 @@ const Content = styled.div`
   justify-content: space-between;
 
   width: 100%;
+
+  text-align: start;
 `
 const opacityYoyo = keyframes`
   0% { opacity: 0.4 }
@@ -70,7 +88,7 @@ const Action = styled.div`
  * Component displaying a basic note on the top of the InfoLayer (through portal).
  * When the note is active, the player can scroll to close it.
  */
-const Note = ({ disablePortal = false, onClose, texts }: NoteProps) => {
+const Note = ({ disablePortal = false, image, onClose, texts }: NoteProps) => {
   const infoLayerElement = document.getElementById(infoLayerId)
 
   const { character, handleTextFinish, isTextCompleted, lines, scrollValue } =
@@ -82,8 +100,9 @@ const Note = ({ disablePortal = false, onClose, texts }: NoteProps) => {
   const note = (
     <Wrapper>
       <StyledProgressBar value={scrollValue} />
+      {image && <Image src={image} alt="" />}
       <Body>
-        {character.avatar && (
+        {character && lines && (
           <Avatar src={character.avatar} alt={`Avatar de ${character.name}`} />
         )}
         <Content>

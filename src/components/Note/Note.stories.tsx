@@ -104,4 +104,32 @@ NoteDialog.args = {
 }
 NoteDialog.storyName = 'with dialog'
 
+export const NoteWithImage = NoteTemplate.bind({})
+NoteWithImage.args = {
+  image: 'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/IMG_1009.jpg',
+  texts: [],
+}
+NoteWithImage.storyName = 'with image only'
+
+export const NoteWithImageAndText = NoteTemplate.bind({})
+NoteWithImageAndText.args = {
+  image: 'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/IMG_1009.jpg',
+  texts: [
+    {
+      character: {
+        avatar:
+          'https://secure.gravatar.com/avatar/ccac36b35a890c8ac8cff3f83fb94d91',
+        name: 'Gauthier',
+      },
+      lines: [
+        {
+          text: "Regarde comme c'est beau !",
+          speed: textSpeed.fast,
+        },
+      ],
+    },
+  ],
+}
+NoteWithImageAndText.storyName = 'with image and text'
+
 export default NoteMeta

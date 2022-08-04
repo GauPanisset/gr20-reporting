@@ -80,8 +80,18 @@ export const waypoints: Waypoint[] = [
     type: WaypointType.Refuge,
   },
   {
-    coordinate: projectLatLon(42.477807, 8.878112),
+    coordinate: projectLatLon(42.493905, 8.850094),
     id: 15,
+    texts: [],
+    image:
+      'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/IMG_1094.jpg',
+    type: WaypointType.Note,
+  },
+  {
+    coordinate: projectLatLon(42.477807, 8.878112),
+    id: 16,
+    image:
+      'https://gaupanisset-corsica.s3.eu-west-3.amazonaws.com/IMG_1009.jpg',
     texts: [
       {
         character: {

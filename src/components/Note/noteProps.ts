@@ -6,6 +6,7 @@ export type NoteProps = {
    * of the `InfoLayer` or not.
    */
   disablePortal?: boolean
+  image?: string
   /**
    * Texts to display in the Note.
    * See NoteText type for more information.

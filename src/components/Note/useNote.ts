@@ -15,7 +15,9 @@ export const useNote = ({ onClose, texts }: useNoteProps) => {
    * Index of the current text in the `texts` array.
    */
   const [textIndex, setTextIndex] = React.useState<number>(0)
-  const [isTextCompleted, setIsTextCompleted] = React.useState<boolean>(false)
+  const [isTextCompleted, setIsTextCompleted] = React.useState<boolean>(
+    texts.length === 0
+  )
 
   /**
    * Value of the progress bar.
@@ -64,10 +66,10 @@ export const useNote = ({ onClose, texts }: useNoteProps) => {
   }, [])
 
   return {
-    character: texts[textIndex].character,
+    character: texts.length ? texts[textIndex].character : null,
     handleTextFinish,
     isTextCompleted,
-    lines: texts[textIndex].lines,
+    lines: texts.length ? texts[textIndex].lines : null,
     scrollValue,
   }
 }
